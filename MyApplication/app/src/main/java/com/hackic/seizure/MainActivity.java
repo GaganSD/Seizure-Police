@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     public void MakePhoneCall(){
         String messageToSend = "I'm having a seizure. Please help me, this was sent by the app seizure police! Help! Here's a link that could help you help me: https://bit.ly/2sPRubM"; //I am at " + latitude.toString() + " " + longitude.toString();
-        String number = "07746003578";
+        String number = "01234567889";
 
         System.out.println("ABOUT TO SEND ERROR MESSAGE");
 
