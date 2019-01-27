@@ -14,4 +14,4 @@ Kacper Kapusniak,
 Gagan Devagiri,
 Tan Dun Yuan,
 Jiang Jim,
-Ziyou Zhang,
+Ziyou Zhang
