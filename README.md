@@ -10,8 +10,8 @@ First of all, we collected the data to distinguish between normal movements like
 To edit or reproduce the functionality of the app it is required to use Android Studio  or InteLLiJ idea and Android Phone version 4.0 or higher with gyroscope, acceleration and gravity sensors.
 
 ## Authors:
-Kacper Kapusniak
-Gagan Devagiri
-Tan Dun Yuan
-Jiang Jim
-Ziyou Zhang
+Kacper Kapusniak,
+Gagan Devagiri,
+Tan Dun Yuan,
+Jiang Jim,
+Ziyou Zhang,
