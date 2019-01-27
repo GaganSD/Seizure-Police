@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,6 +37,14 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,7 +54,10 @@ import com.google.firebase.iid.InstanceIdResult;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class MainActivity extends AppCompatActivity implements SensorEventListener, LocationListener{
 
     private final Runnable updater =  new Runnable() {
         int startingTime = 15;
@@ -63,6 +75,17 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    private SensorManager accSensorManager;
+    private LocationManager locationManager;
+    private Sensor accSensor;
+
+    private int windowSize = 5000;
+    public Queue<Double> accBufferx = new LinkedList<>();
+    public Queue<Double> accBuffery = new LinkedList<>();
+    public Queue<Double> accBufferz = new LinkedList<>();
+
+    public static Double latitude, longitude;
 
     private final Handler handler = new Handler();
 
@@ -97,6 +120,29 @@ public class MainActivity extends AppCompatActivity {
         }
 
         init();
+
+        accSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            Button buttonNoPermission = (Button) findViewById(R.id.buttonNoPermission);
+//            buttonNoPermission.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    finish();
+//                    System.exit(0);
+//                }
+//            });
+//            return;
+        }
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
+        accSensor = accSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+//        gyrSensor = gyrSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+
+        accSensorManager.registerListener(this, accSensor, 10000);
+//        gyrSensorManager.registerListener(this, gyrSensor, 10000);
     }
 
     private void init(){
@@ -135,5 +181,55 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        accBufferx.add((double) event.values[0]);
+        if(accBufferx.size() > windowSize){
+            accBufferx.remove();
+        }
+
+        accBuffery.add((double) event.values[1]);
+        if(accBufferx.size() > windowSize){
+            accBufferx.remove();
+        }
+
+        accBufferz.add((double) event.values[2]);
+        if(accBufferx.size() > windowSize){
+            accBufferx.remove();
+        }
+
+        Log.w("accBufferx", String.valueOf(accBufferx));
+        Log.w("accBuffery", String.valueOf(accBuffery));
+        Log.w("accBufferz", String.valueOf(accBufferz));
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+        Log.w("latitude:", String.valueOf(latitude));
+        Log.w("longitude:", String.valueOf(longitude));
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 }
