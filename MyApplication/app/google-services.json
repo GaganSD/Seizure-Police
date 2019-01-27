@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "122787754648",
+    "firebase_url": "https://myapplication-80466.firebaseio.com",
+    "project_id": "myapplication-80466",
+    "storage_bucket": "myapplication-80466.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122787754648:android:6b5a6f228d71b903",
+        "android_client_info": {
+          "package_name": "com.hackic.seizure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122787754648-4ef4vnqe501l9sioju488rbqqb66ec29.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hackic.seizure",
+            "certificate_hash": "8207cfe3523cb6778f0dfa841884a7fc3b970c16"
+          }
+        },
+        {
+          "client_id": "122787754648-d1omqu8euq2kl61e2hk564i98ace18uh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDhVM7OQpOFjnFwn4AfMNQZQua94XgtwA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "122787754648-d1omqu8euq2kl61e2hk564i98ace18uh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
