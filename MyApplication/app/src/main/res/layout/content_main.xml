@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="59dp"
             android:gravity="center"
-            android:text="We detected a possibility of seizure from your previous activity."
+            android:text="We detected a possibility of seizure from your previous activity!"
             android:textColor="#ffff"
             app:layout_constraintHorizontal_bias="0.5"
             tools:layout_editor_absoluteY="68dp" />
@@ -89,7 +89,7 @@
             android:layout_width="match_parent"
             android:layout_height="116dp"
             android:gravity="center"
-            android:text="If this is a mistake please confirm by pressing the button located at the right bottom. Emergency procedures will be taken if no action will be taken in 15 seconds."
+            android:text="If this is a mistake please confirm by pressing the button below. Emergency procedures will be taken if no action is taken."
             android:textColor="#ffff"
             app:layout_constraintHorizontal_bias="0.5"
             tools:layout_editor_absoluteY="279dp" />
