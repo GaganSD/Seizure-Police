@@ -49,7 +49,7 @@ public class Analyzer {
 
 
     Boolean okay = true;
-    if (current_avg_acc_magnitude > 3 * history_mean_avg || current_avg_acc_magnitude>10) {
+    if (current_avg_acc_magnitude > 3 * history_mean_avg || current_avg_acc_magnitude>15) {
       okay = false;
     }
 

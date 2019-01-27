@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -92,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
-
         accSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         String android_id = Settings.Secure.getString(getContentResolver(),
                                 Settings.Secure.ANDROID_ID);
                         Log.d("updateID", "ready to send");
-                        new HttpHandler(getApplicationContext()).sendPost(token, android_id);
 
                     }
                 });
@@ -151,22 +150,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         this.pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        createNotificationChannel();
+        //createNotificationChannel();
     }
 
-    private void createNotificationChannel() {
-        CharSequence name = "seizure";
-        String description = "no description";
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel("123", name, importance);
-        channel.setDescription(description);
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
-    }
+//    private void createNotificationChannel() {
+//        CharSequence name = "seizure";
+//        String description = "no description";
+//        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+//        NotificationChannel channel = new NotificationChannel("123", name, importance);
+//        channel.setDescription(description);
+//        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+//        notificationManager.createNotificationChannel(channel);
+//    }
 
     public void MakePhoneCall(){
         String messageToSend = "I'm having a seizure. Please help me, this was sent by the app seizure police! Help! Here's a link that could help you help me: https://bit.ly/2sPRubM"; //I am at " + latitude.toString() + " " + longitude.toString();
         String number = "07746003578";
+
+        System.out.println("ABOUT TO SEND ERROR MESSAGE");
 
         SmsManager.getDefault().sendTextMessage(number, null, messageToSend, null,null);
     }
@@ -189,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private int i = 0;
     private List<Double> history = new ArrayList<>();
 
+    boolean runIt = true;
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -211,39 +213,33 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (i++ > 100){
             boolean condition = Analyzer.are_you_ok(accBufferx, accBuffery, accBufferz, history);
             Log.d("counter", "onSensorChanged: checking with condition " + condition);
-            if (!condition) {
+            if (!condition && runIt) {
                 String title = "Someone";
                 String body = "seizure attack";
                 String android_id = Settings.Secure.getString(getContentResolver(),
                         Settings.Secure.ANDROID_ID);
-                new HttpHandler(getApplicationContext()).emergency_msg(title, body, android_id);
 
-                Runnable updater =  new Runnable() {
-                    int startingTime = 15;
-                    @Override
-                    public void run() {
+                final TextView t = (TextView) findViewById(R.id.timer);
 
-                        if (startingTime <= 0) {
-                            MakePhoneCall();
-                        }
-                        else {
-                            TextView t = (TextView) findViewById(R.id.timer);
-                            startingTime -= 1;
-                            t.setText("" + startingTime);
-                        }
+                new CountDownTimer(15000, 1000) {
 
+                    public void onTick(long millisUntilFinished) {
+                        t.setText("" + millisUntilFinished / 1000);
                     }
-                };
-                for (int i = 1; i < 20; i++) {
-                    handler.postDelayed(updater,i*1000);
-                }
+
+                    @Override
+                    public void onFinish() {
+                        MakePhoneCall();
+                    }
+                }.start();
+
+                runIt = false;
             }
-            i = 0;
         }
 
-        Log.w("accBufferx", String.valueOf(accBufferx));
-        Log.w("accBuffery", String.valueOf(accBuffery));
-        Log.w("accBufferz", String.valueOf(accBufferz));
+//        Log.w("accBufferx", String.valueOf(accBufferx));
+//        Log.w("accBuffery", String.valueOf(accBuffery));
+//        Log.w("accBufferz", String.valueOf(accBufferz));
 
     }
 
