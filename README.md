@@ -6,7 +6,7 @@ In this hackathon, we aimed to solve the problem of lack of peer support during 
 
 Using Java, we created an android app that notifies the NHS and the user's emergency contacts that they are currently suffering from a seizure. The application uses motion sensors of the phone, analysis the pace triggered by the movement of the user and tries to observe any abnormal behaviour that occurs in a short period of time. A concerned warning message pops up when an abnormal behavioural pattern is detected. If the user fails to respond to the message, it texts the user's information and location to the NHS's SMS services and also notifies the user's emergency contact. Connecting the patient to proper health services is the core idea of our application. This app also aims to replace the physical seizure sensor used in the medical industry which costs around 500$. Our application works on precise statistical analysis which reads the pedometer data when linked with fitness device and apps. 
 
-Based on testing in the hackspace, we came to the conclusion that our app is around 75% accurate, we believe that its accuracy will rise as we implement a machine learning algorithm in the app as one of the updates, and once we collect enough data. We aimed to implement a few more features
+Based on testing in the hackspace, we came to the conclusion that our app is around 75% accurate, we believe that its accuracy will rise as we implement a machine learning algorithm in the app as one of the updates, and once we collect enough data. We aimed to implement a few more features.
 
 ## Prerequisites:
 
@@ -18,3 +18,7 @@ To edit or reproduce the functionality of the app it is required to use Android 
 - Tan Dun Yuan
 - Jiang Jim
 - Ziyou Zhang
+
+## Screenshot of the application:
+
+![E](https://github.com/Gagan-Devagiri/Seizure-Police/blob/master/Screenshot-ICHACK-2019.png)
