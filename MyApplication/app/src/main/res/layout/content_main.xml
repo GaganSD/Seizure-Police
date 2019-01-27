@@ -8,38 +8,38 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="151dp"
-        android:layout_height="72dp"
-         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="52dp"
-        android:text="Send help immediately"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.043"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+    <!--<Button-->
+    <!--android:id="@+id/button"-->
+    <!--android:layout_width="151dp"-->
+    <!--android:layout_height="72dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginLeft="8dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginRight="8dp"-->
+    <!--android:layout_marginBottom="52dp"-->
+    <!--android:text="Send help immediately"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHorizontal_bias="0.043"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent"-->
+    <!--app:layout_constraintVertical_bias="1.0" />-->
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="153dp"
-        android:layout_height="70dp"
+        android:layout_width="369dp"
+        android:layout_height="95dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="52dp"
-        android:text="I'm feeling okay."
+        android:text="I'm feeling okay"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
@@ -48,6 +48,7 @@
         android:id="@+id/imageView3"
         android:layout_width="432dp"
         android:layout_height="773dp"
+        android:textColor="#ffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,6 +70,7 @@
             android:layout_height="59dp"
             android:gravity="center"
             android:text="We detected a possibility of seizure from your previous activity."
+            android:textColor="#ffff"
             app:layout_constraintHorizontal_bias="0.5"
             tools:layout_editor_absoluteY="68dp" />
 
@@ -78,6 +80,7 @@
             android:layout_height="121dp"
             android:gravity="center"
             android:text="15"
+            android:textColor="#ffff"
             android:textSize="30sp"
             app:layout_constraintHorizontal_bias="0.5"
             tools:layout_editor_absoluteY="68dp" />
@@ -86,7 +89,8 @@
             android:layout_width="match_parent"
             android:layout_height="116dp"
             android:gravity="center"
-            android:text="If this is a mistake please confirm by below. Emergency procedures will be taken if no action will be taken in 15 seconds."
+            android:text="If this is a mistake please confirm by pressing the button located at the right bottom. Emergency procedures will be taken if no action will be taken in 15 seconds."
+            android:textColor="#ffff"
             app:layout_constraintHorizontal_bias="0.5"
             tools:layout_editor_absoluteY="279dp" />
     </LinearLayout>
