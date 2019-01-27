@@ -56,22 +56,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener, LocationListener {
-    private final Runnable updater =  new Runnable() {
-        int startingTime = 15;
-        @Override
-        public void run() {
-
-            if (startingTime <= 0) {
-                MakePhoneCall();
-            }
-            else {
-                TextView t = (TextView) findViewById(R.id.timer);
-                startingTime -= 1;
-                t.setText("" + startingTime);
-            }
-
-        }
-    };
 
     private final Handler handler = new Handler();
 
@@ -79,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private LocationManager locationManager;
     private Sensor accSensor;
 
-    private int windowSize = 5000;
+    private int windowSize = 500;
     public Queue<Double> accBufferx = new LinkedList<>();
     public Queue<Double> accBuffery = new LinkedList<>();
     public Queue<Double> accBufferz = new LinkedList<>();
@@ -107,9 +91,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 System.exit(0);
             }
         });
-        for (int i = 1; i < 20; i++) {
-            handler.postDelayed(updater,i*1000);
-        }
+
 
         accSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -127,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
         accSensor = accSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 //        gyrSensor = gyrSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
@@ -182,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void MakePhoneCall(){
-        String messageToSend = "I'm having a seizure. Please help me, this was sent by the app seizure police! Help! Here's a link that could help you help me: https://bit.ly/2sPRubM";
+        String messageToSend = "I'm having a seizure. Please help me, this was sent by the app seizure police! Help! Here's a link that could help you help me: https://bit.ly/2sPRubM"; //I am at " + latitude.toString() + " " + longitude.toString();
         String number = "07746003578";
 
         SmsManager.getDefault().sendTextMessage(number, null, messageToSend, null,null);
@@ -225,21 +208,42 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             accBufferx.remove();
         }
 
-        if (i > 300){
+        if (i++ > 100){
             boolean condition = Analyzer.are_you_ok(accBufferx, accBuffery, accBufferz, history);
+            Log.d("counter", "onSensorChanged: checking with condition " + condition);
             if (!condition) {
                 String title = "Someone";
                 String body = "seizure attack";
                 String android_id = Settings.Secure.getString(getContentResolver(),
                         Settings.Secure.ANDROID_ID);
                 new HttpHandler(getApplicationContext()).emergency_msg(title, body, android_id);
+
+                Runnable updater =  new Runnable() {
+                    int startingTime = 15;
+                    @Override
+                    public void run() {
+
+                        if (startingTime <= 0) {
+                            MakePhoneCall();
+                        }
+                        else {
+                            TextView t = (TextView) findViewById(R.id.timer);
+                            startingTime -= 1;
+                            t.setText("" + startingTime);
+                        }
+
+                    }
+                };
+                for (int i = 1; i < 20; i++) {
+                    handler.postDelayed(updater,i*1000);
+                }
             }
             i = 0;
         }
 
-//        Log.w("accBufferx", String.valueOf(accBufferx));
-//        Log.w("accBuffery", String.valueOf(accBuffery));
-//        Log.w("accBufferz", String.valueOf(accBufferz));
+        Log.w("accBufferx", String.valueOf(accBufferx));
+        Log.w("accBuffery", String.valueOf(accBuffery));
+        Log.w("accBufferz", String.valueOf(accBufferz));
 
     }
 
