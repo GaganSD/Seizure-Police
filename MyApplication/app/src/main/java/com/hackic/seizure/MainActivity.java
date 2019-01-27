@@ -3,6 +3,9 @@ package com.hackic.seizure;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +15,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +39,16 @@ import android.location.LocationManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;import java.util.Timer;
+import android.hardware.SensorManager;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
 import java.util.TimerTask;
 
 import java.util.ArrayDeque;
@@ -119,7 +133,54 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         accSensorManager.registerListener(this, accSensor, 10000);
 //        gyrSensorManager.registerListener(this, gyrSensor, 10000);
+
+        init();
+        Log.d("updateID", "starting");
+        update();
     }
+
+    private void update() {
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.d("updateID", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        String android_id = Settings.Secure.getString(getContentResolver(),
+                                Settings.Secure.ANDROID_ID);
+                        Log.d("updateID", "ready to send");
+                        new HttpHandler(getApplicationContext()).sendPost(token, android_id);
+
+                    }
+                });
+
+    }
+
+    public static PendingIntent pendingIntent = null;
+
+    private void init(){
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        this.pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        createNotificationChannel();
+    }
+
+    private void createNotificationChannel() {
+        CharSequence name = "seizure";
+        String description = "no description";
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel("123", name, importance);
+        channel.setDescription(description);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+    }
+
     public void MakePhoneCall(){
         String messageToSend = "I'm having a seizure. Please help me, this was sent by the app seizure police! Help! Here's a link that could help you help me: https://bit.ly/2sPRubM";
         String number = "07746003578";
@@ -142,6 +203,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
 
+    private int i = 0;
+    private List<Double> history = new ArrayList<>();
+
+
     @Override
     public void onSensorChanged(SensorEvent event) {
 
@@ -160,9 +225,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             accBufferx.remove();
         }
 
-        Log.w("accBufferx", String.valueOf(accBufferx));
-        Log.w("accBuffery", String.valueOf(accBuffery));
-        Log.w("accBufferz", String.valueOf(accBufferz));
+        if (i > 300){
+            boolean condition = Analyzer.are_you_ok(accBufferx, accBuffery, accBufferz, history);
+            if (!condition) {
+                String title = "Someone";
+                String body = "seizure attack";
+                String android_id = Settings.Secure.getString(getContentResolver(),
+                        Settings.Secure.ANDROID_ID);
+                new HttpHandler(getApplicationContext()).emergency_msg(title, body, android_id);
+            }
+            i = 0;
+        }
+
+//        Log.w("accBufferx", String.valueOf(accBufferx));
+//        Log.w("accBuffery", String.valueOf(accBuffery));
+//        Log.w("accBufferz", String.valueOf(accBufferz));
 
     }
 

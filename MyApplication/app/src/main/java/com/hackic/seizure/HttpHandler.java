@@ -2,6 +2,7 @@ package com.hackic.seizure;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -43,6 +44,35 @@ public class HttpHandler {
     }
 
     String url = "http://146.169.157.139/update_with_id";
+
+    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json,
+            new Response.Listener<JSONObject>() {
+              @Override
+              public void onResponse(JSONObject response) {
+                Log.d("sendpostresponse", "onResponse: successful");
+              }
+            }, new Response.ErrorListener() {
+      @Override
+      public void onErrorResponse(VolleyError error) {
+        Log.d("sendpostresponse", "onErrorResponse: failure" + error.getMessage());
+      }
+    });
+    Log.d("queue", "added to queue");
+    this.queue.add(jsonObjectRequest);
+  }
+
+  public void emergency_msg(String title, String body, String id) {
+    Log.d("HTTPPost", "emergency_msg: preparing to send");
+
+    JSONObject json = new JSONObject();
+    try {
+      json.put("title",title);
+      json.put("body",body);
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+
+    String url = "http://146.169.157.139/help";
 
     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json,
             new Response.Listener<JSONObject>() {
