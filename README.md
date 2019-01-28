@@ -1,5 +1,8 @@
 # Seizure Police
 
+##Prizes won:
+- Runner up of the title "Most Ethical Hack/ For-good app" awarded by the gold sponsor: [VISA](visa.co.uk), in the largest hackathon of the United Kingdom, Imperial College Hackathon 2019.
+
 ## Inspiration & introduction:
 
 In this hackathon, we aimed to solve the problem of lack of peer support during serious medical condition with technology. Every year in the UK, more than half a million people die from seizure and around 600 people die from seizure solely because of lack of lack of availability of other humans. Their lives could be saved if someone were around them and called the emergency services at the right time. 
