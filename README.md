@@ -1,6 +1,6 @@
 # Seizure Police
 
-##Prizes won:
+## Prizes won:
 - Runner up of the title "Most Ethical Hack/ For-good app" awarded by the gold sponsor: [VISA](visa.co.uk), in the largest hackathon of the United Kingdom, Imperial College Hackathon 2019.
 
 ## Inspiration & introduction:
